@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['*', ]
 INSTALLED_APPS = [
     'core.apps.CoreConfig',
     'ui.apps.UiConfig',
+    'ws.apps.WsConfig',
     'user_mgr.apps.UserMgrConfig',
 
     'django.contrib.admin',
@@ -144,14 +145,22 @@ AUTHENTICATION_BACKENDS = (
 SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '55799866411-hco9i75hqio6ckkeja52je47vhs1505e.apps.googleusercontent.com'
 SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'ZXFpLpR7p7D0322cJGz9cP70'
 
-SOCIAL_AUTH_PIPELINE = (
-    'social_core.pipeline.social_auth.social_details',
-    'social_core.pipeline.social_auth.social_uid',
-    'social_core.pipeline.social_auth.social_user',
-    'social_core.pipeline.user.get_username',
-    'social_core.pipeline.user.create_user',
-    'social_core.pipeline.social_auth.associate_user',
-    'social_core.pipeline.social_auth.load_extra_data',
-    'social_core.pipeline.user.user_details',
-    'social_core.pipeline.social_auth.associate_by_email',
-)
+# Facebook
+SOCIAL_AUTH_FACEBOOK_KEY = '934367166724479'  # App ID
+SOCIAL_AUTH_FACEBOOK_SECRET = '1aec8e19c6aa4a7cacef4fe3628ff0fd'  # App Secret
+
+# SOCIAL_AUTH_PIPELINE = (
+#     'social_core.pipeline.social_auth.social_details',
+#     'social_core.pipeline.social_auth.social_uid',
+#     'social_core.pipeline.social_auth.social_user',
+#     'social_core.pipeline.user.get_username',
+#     'social_core.pipeline.user.create_user',
+#     'social_core.pipeline.social_auth.associate_user',
+#     'social_core.pipeline.social_auth.load_extra_data',
+#     'social_core.pipeline.user.user_details',
+#     'social_core.pipeline.social_auth.associate_by_email',
+# )
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'dashboard'

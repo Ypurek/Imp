@@ -6,7 +6,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
 
     path('', include('ui.urls'), name='ui'),
-    path('ws', include('ws.urls'), name='ws'),
 
     path('login/', auth_views.login, {'template_name': 'login.html'}, name='login'),
     path('logout/', auth_views.logout, name='logout'),
