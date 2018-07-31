@@ -1,8 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
+from .settings import *
 import datetime as dt
-
-DESCRIPTION_LENGTH = 2000
 
 
 class Project(models.Model):
@@ -33,6 +32,16 @@ class Tag(models.Model):
                                    max_length=140)
 
 
+class RunTag(models.Model):
+    name = models.CharField(default='',
+                            null=False,
+                            max_length=100,
+                            unique=True)
+    description = models.CharField(default=None,
+                                   null=True,
+                                   max_length=140)
+
+
 class TestCase(models.Model):
     project = models.ForeignKey(Project,
                                 on_delete=models.CASCADE,
@@ -50,22 +59,26 @@ class TestCase(models.Model):
                               related_name='tests',
                               null=True)
 
+    @property
+    def status(self):
+        run = self.runs.filter(timestamp__isnull=False).latest('id')
+        if run is None:
+            return 'NR'
+        else:
+            return run.status
+
 
 class TestRun(models.Model):
     test_case = models.ForeignKey(TestCase,
                                   on_delete=models.CASCADE,
                                   related_name='runs')
-    status = models.CharField(choices=(('NR', 'No Run'),
-                                       ('PS', 'Passed'),
-                                       ('FL', 'Failed'),
-                                       ('BL', 'Blocked'),
-                                       ('NA', 'Not Available')),
+    status = models.CharField(choices=tuple(STATUSES.items()),
                               default='NR',
                               max_length=2,
                               null=False)
-    timestamp = models.DateTimeField(default=dt.datetime.now(),
-                                     null=False)
-    tags = models.ManyToManyField(Tag)
+    timestamp = models.DateTimeField(default=None,
+                                     null=True)
+    tags = models.ManyToManyField(RunTag)
     comment = models.CharField(default='',
                                max_length=DESCRIPTION_LENGTH)
     version = models.SmallIntegerField(default=1)
@@ -73,6 +86,14 @@ class TestRun(models.Model):
                                  on_delete=models.SET_NULL,
                                  related_name='runs',
                                  null=True)
+
+    def execute(self, status, executor, comment=''):
+        self.status = status
+        self.timestamp = dt.datetime.now()
+        self.executor = executor
+        self.comment = comment
+        self.version = self.test_case.version
+        self.save()
 
 
 class TestCaseHistory(models.Model):
