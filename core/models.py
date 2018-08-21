@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Q
 from django.contrib.auth.models import User
 from .settings import *
 import datetime as dt
@@ -22,7 +23,7 @@ class Project(models.Model):
                                    default=None)
 
 
-class Tag(models.Model):
+class TestTag(models.Model):
     name = models.CharField(default='',
                             null=False,
                             max_length=100,
@@ -30,6 +31,17 @@ class Tag(models.Model):
     description = models.CharField(default=None,
                                    null=True,
                                    max_length=140)
+
+    @classmethod
+    def find(cls, name=None, description=None):
+        if name is None and description is None:
+            return []
+        elif name is not None and description is None:
+            return cls.objects.filter(name__contains=name)
+        elif name is None and description is not None:
+            return cls.objects.filter(description__contains=description)
+        else:
+            return cls.objects.filter(Q(name__contains=name) | Q(description__contains=description))
 
 
 class RunTag(models.Model):
@@ -49,15 +61,15 @@ class TestCase(models.Model):
     summary = models.CharField(default='',
                                null=False,
                                max_length=100)
-    tags = models.ManyToManyField(Tag)
+    tags = models.ManyToManyField(TestTag)
     body = models.CharField(default=None,
                             null=True,
                             max_length=DESCRIPTION_LENGTH)
     version = models.SmallIntegerField(default=1)
-    owner = models.ForeignKey(User,
-                              on_delete=models.SET_NULL,
-                              related_name='tests',
-                              null=True)
+    author = models.ForeignKey(User,
+                               on_delete=models.SET_NULL,
+                               related_name='tests',
+                               null=True)
 
     @property
     def status(self):

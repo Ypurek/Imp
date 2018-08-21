@@ -1,4 +1,4 @@
-from .models import *
+from core.models import Project
 
 
 def create_project(user, name, description=''):
