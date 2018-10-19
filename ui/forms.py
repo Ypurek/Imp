@@ -20,3 +20,9 @@ class ProjectForm(forms.Form):
             raw_users = self.cleaned_data['users'].split(USERS_DELIMITER)
             raw_users_rdy = tuple(map(str.strip, raw_users))
             return get_users_by_list(raw_users_rdy)
+
+
+class LoginForm(forms.Form):
+    email = forms.EmailField(required=True)
+    password = forms.CharField(required=True,
+                               min_length=8)
