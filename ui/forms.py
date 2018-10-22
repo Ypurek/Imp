@@ -1,6 +1,7 @@
 from django import forms
 from user_mgr.processing import get_users_by_list
 from . import validators as v
+from user_mgr import validatiors as uv
 
 DESCRIPTION_LENGTH = 2000
 USERS_DELIMITER = ','
@@ -12,7 +13,7 @@ class ProjectForm(forms.Form):
                            min_length=3,
                            validators=[v.is_project_name_unique])
     description = forms.CharField(required=False,
-                                   max_length=DESCRIPTION_LENGTH)
+                                  max_length=DESCRIPTION_LENGTH)
     users = forms.CharField(required=False)
 
     def get_users(self):
@@ -24,5 +25,15 @@ class ProjectForm(forms.Form):
 
 class LoginForm(forms.Form):
     email = forms.EmailField(required=True)
+    password = forms.CharField(required=True,
+                               min_length=8)
+
+
+class RegisterForm(forms.Form):
+    username = forms.CharField(required=True,
+                               validators=[uv.validate_user_exists])
+    # TODO check if default validator works
+    email = forms.EmailField(required=True,
+                             validators=[uv.validate_email_exists])
     password = forms.CharField(required=True,
                                min_length=8)

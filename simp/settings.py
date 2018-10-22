@@ -134,11 +134,13 @@ STATIC_ROOT = 'static/'
 # ---------------------------------------------------------------
 
 AUTHENTICATION_BACKENDS = (
+    # default backend
+    'django.contrib.auth.backends.ModelBackend',
+    # oAuth backends
     'social_core.backends.google.GoogleOAuth2',
     'social_core.backends.facebook.FacebookOAuth2',
 
-    # default backend
-    'django.contrib.auth.backends.ModelBackend',
+
 )
 
 # Google
