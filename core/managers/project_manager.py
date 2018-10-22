@@ -26,3 +26,9 @@ def delete_project(project):
     pass
 
 
+def add_user(project, user):
+    project.users.add(user)
+
+
+def remove_user(project, user):
+    project.users.remove(user)

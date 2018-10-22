@@ -71,6 +71,10 @@ class TestCase(models.Model):
                                related_name='tests',
                                null=True)
 
+    @classmethod
+    def find(cls, summary=None, body=None):
+        pass  # TODO
+
     @property
     def status(self):
         run = self.runs.filter(timestamp__isnull=False).latest('id')

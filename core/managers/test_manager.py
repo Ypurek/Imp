@@ -9,3 +9,9 @@ def create_test(project, author, summary, tags=None, body=None):
             test.tags.add(create_test_tag(tag))
     test.save()
     return test
+
+
+def get_test(id):
+    t = TestCase.objects.filter(id=id)
+    if len(t) == 1:
+        return t[0]
