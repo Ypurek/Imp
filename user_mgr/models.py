@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from core.models import Project
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
@@ -9,6 +10,10 @@ class Profile(models.Model):
     role = models.CharField(max_length=50,
                             default=None,
                             null=True)
+    hidden_projects = models.ManyToManyField(Project,
+                                             default=None,
+                                             null=True,
+                                             related_name='+')
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):

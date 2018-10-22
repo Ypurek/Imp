@@ -22,4 +22,5 @@ class CreateTestForm(forms.Form):
 class CreateProjectForm(forms.Form):
     name = forms.CharField(required=True)
     description = forms.CharField(required=False)
+    users = ArrayField(required=False)
 

@@ -1,4 +1,5 @@
 from core.models import Project
+from django.db.models import Q
 
 
 def create_project(user, name, description=''):

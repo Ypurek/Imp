@@ -12,6 +12,12 @@ def get_user_by_email(email):
         return us[0]
 
 
+def get_user_by_name(name):
+    us = User.objects.filter(username=name)
+    if len(us) == 1:
+        return us[0]
+
+
 def create_user(username, email, password):
     return User.objects.create(username=username,
                                email=email,
