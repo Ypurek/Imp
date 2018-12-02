@@ -6,13 +6,13 @@ def create_project(user, name, description=''):
     return Project.objects.create(owner=user, name=name, description=description)
 
 
-def get_project(project_id):
+def get_project(project_id: int):
     r = Project.objects.filter(id=project_id)
     if len(r) > 0:
         return r[0]
 
 
-def update_project(project, owner=None, name=None, description=None):
+def update_project(project: Project, owner=None, name=None, description=None):
     if owner is not None:
         project.owner = owner
     if name is not None:
@@ -33,3 +33,8 @@ def add_user(project, user):
 
 def remove_user(project, user):
     project.users.remove(user)
+
+
+def search_project(user, name='', description=''):
+    projects = Project.objects.filter(Q(name__contains=name) | Q(description__contains=description))
+    return [p for p in projects if p.check_permission(user)]

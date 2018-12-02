@@ -15,4 +15,4 @@ def check_if_array_contains_str(value):
 
 def check_if_project_unique(value):
     if len(Project.objects.filter(name=value)) != 0:
-        raise ValidationError('Project name already exist', params={'value': x})
+        raise ValidationError('Project name already exist', params={'value': value})

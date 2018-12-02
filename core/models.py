@@ -22,6 +22,12 @@ class Project(models.Model):
                                    related_name='visible_projects',
                                    default=None)
 
+    def check_permission(self, user: User):
+        if self.owner == user or user in self.users:
+            return True
+        else:
+            False
+
 
 class TestTag(models.Model):
     name = models.CharField(default='',
