@@ -3,13 +3,13 @@
 {% block content %}
 
     <div>
-        <h2>Dashboard</h2>
+        <h2>Project {{ project.name }}</h2>
         <p>Hello {{ user.username }}!</p>
         <a href='logout/'>logout</a>
     </div>
 
     <div>
-        <h3>List of available projects</h3>
+        <h3>Test cases</h3>
         <ul>
             {% for project in projects %}
                 <li>
